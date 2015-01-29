@@ -8,23 +8,7 @@
   <section id="main" class="todobody" ng-show="todos.length">
     <input id="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
     <label for="toggle-all">Mark all as complete</label>
-    <ul id="todo-list">
-      <li ng-repeat="todo in todos" ng-class="{completed: todo.completed}">
-        <div class="view">
-          <input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="toggleCompleted(todo)">
-          <label>{{todo.title}}</label>
-          <button class="destroy" ng-click="removeTodo(todo)"></button>
-        </div>
-        
-      </li>
-    </ul>
-  </div>
-  
+    <todos-list todos="todos"></todos-list>  
   </section>
-  <footer id="footer" ng-show="todos.length">
-    <span id="todo-count"><strong>{{remainingCount}}</strong>
-      <ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
-    </span>
-    <button id="clear-completed" ng-click="clearCompletedTodos()" ng-show="completedCount">Clear completed ({{completedCount}})</button>
-  </footer>
+  <todos-footer todos="todos"></todos-footer>
 </section>
