@@ -1,48 +1,50 @@
 angular.module('todosApp')
-  .controller('TodoCtrl', function TodoCtrl($scope, $filter, todoStorage) {
+  .controller('TodoCtrl', function TodoCtrl($scope, $filter, store) {
     'use strict';
 
-    var todos = $scope.todos = todoStorage.get();
+    var todos = $scope.todos = store.todos
 
     $scope.newTodo = '';
 
-    $scope.$watch('todos', function (newValue, oldValue) {
+    $scope.$watch('todos', function () {
       $scope.remainingCount = $filter('filter')(todos, { completed: false }).length;
       $scope.completedCount = todos.length - $scope.remainingCount;
       $scope.allChecked = !$scope.remainingCount;
-      if (newValue !== oldValue) { // This prevents unneeded calls to the local storage
-        todoStorage.put(todos);
-      }
     }, true);
 
 
     $scope.addTodo = function () {
-      var newTodo = $scope.newTodo.trim();
-      if (!newTodo.length) {
+      var newTodo = {
+        title: $scope.newTodo.trim(),
+        completed: false
+      };
+      if (!newTodo.title) {
         return;
       }
-
-      todos.push({
-        title: newTodo,
-        completed: false
-      });
-
+      store.insert(newTodo);
       $scope.newTodo = '';
     };
 
     $scope.removeTodo = function (todo) {
-      todos.splice(todos.indexOf(todo), 1);
+      store.delete(todo)
     };
 
     $scope.clearCompletedTodos = function () {
-      $scope.todos = todos = todos.filter(function (val) {
-        return !val.completed;
-      });
+      store.clearCompleted()
+    };
+
+    $scope.toggleCompleted = function (todo, completed) {
+      if (angular.isDefined(completed)) {
+        todo.completed = completed;
+      }
+      store.put(todo, todos.indexOf(todo))
     };
 
     $scope.markAll = function (completed) {
       todos.forEach(function (todo) {
-        todo.completed = !completed;
+        if (todo.completed !== completed) {
+          $scope.toggleCompleted(todo, completed);
+        }
       });
     };
   });

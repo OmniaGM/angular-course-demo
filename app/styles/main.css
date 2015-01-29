@@ -1,3 +1,12 @@
 .container{
 	width: 100%;
 }
+.todoapp {
+  border: 1px solid #ccc;
+  margin: 20px;
+  width: 500px;
+  display: inline-block;
+}
+.todoapp h1, .todoapp .todobody{
+  padding: 10px;
+}
