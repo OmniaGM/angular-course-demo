@@ -3,7 +3,8 @@ angular.module('todosApp')
     // Runs during compile
     return {
       scope: {
-        todos: '='
+        todos: '=',
+        list: '='
       }, // {} = isolate, true = child, false/undefined = no change
       controller: function($scope, $filter, todoStorage) {
         var store = todoStorage;
@@ -12,7 +13,7 @@ angular.module('todosApp')
           $scope.completedCount = $scope.todos.length - $scope.remainingCount;
         }, true);
         $scope.clearCompletedTodos = function () {
-          store.clearCompleted();
+          store.clearCompleted(todoStorage.todosList.indexOf($scope.list));
         };
       },
       restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment

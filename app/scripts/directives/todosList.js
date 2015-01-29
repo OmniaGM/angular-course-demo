@@ -3,15 +3,16 @@ angular.module('todosApp')
     // Runs during compile
     return {
       scope: {
-        todos: '='
+        todos: '=',
+        list: '='
       }, 
       controller: function($scope, todoStorage) {
         var store = todoStorage
         $scope.removeTodo = function (todo) {
-          store.delete(todo)
+          store.deleteFromList(todo, todoStorage.todosList.indexOf($scope.list))
         };
         $scope.toggleCompleted = function (todo) {
-          store.put(todo, $scope.todos.indexOf(todo))
+          store.putIntoList(todo, todoStorage.todosList.indexOf($scope.list))
         };
         $scope.editTodo = function (todo) {
           $scope.editedTodo = todo;

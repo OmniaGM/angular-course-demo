@@ -1,34 +1,22 @@
 angular.module('todosApp')
-  .controller('TodoCtrl', function TodoCtrl($scope, $filter, store) {
+  .controller('TodoCtrl', function TodoCtrl($scope, store) {
     'use strict';
 
-    var todos = $scope.todos = store.todos;
+    $scope.todosList = store.todosList;
 
-    $scope.newTodo = '';
-
-    $scope.$watch('todos', function () {
-      $scope.remainingCount = $filter('filter')(todos, { completed: false }).length;
-      $scope.allChecked = !$scope.remainingCount;
-    }, true);
-
-    $scope.addTodo = function () {
-      var newTodo = {
-        title: $scope.newTodo.trim(),
-        completed: false
+    $scope.addList = function(){
+      var newList = {
+        subtitle: $scope.newList.trim(),
+        'todos': []
       };
-      if (!newTodo.title) {
+      if (!newList.subtitle) {
         return;
       }
-      store.insert(newTodo);
-      $scope.newTodo = '';
+      store.insert(newList);
+      $scope.newList = '';
     };
-
-    $scope.markAll = function (completed) {
-      todos.forEach(function (todo) {
-        if (todo.completed !== completed) {
-          todo.completed = completed;
-          store.put(todo, todos.indexOf(todo));
-        }
-      });
-    };
+    $scope.removeList = function(list) {
+      store.delete(list)
+    }
+    
   });

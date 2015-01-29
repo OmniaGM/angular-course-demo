@@ -1,0 +1,16 @@
+<header>
+  <div class="title">
+    <h1 class="pull-left">{{list.subtitle}}</h1>
+    <button class="destroy-btn pull-right" ng-click="removeList(list)"></button>
+
+  </div>
+  <form id="todo-form" ng-submit="addTodoTo(list)">
+    <input id="new-todo" placeholder="What needs to be done?" ng-model="newTodo" autofocus>
+  </form>
+</header>
+<section class="todobody" ng-show="list.todos.length">
+  <input id="toggle-alll" class="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
+  <label for="toggle-alll">Mark all as complete</label>
+  <todos-list todos="list.todos" list="list"></todos-list>  
+  <todos-footer todos="list.todos" list="list"></todos-footer>
+</section> 

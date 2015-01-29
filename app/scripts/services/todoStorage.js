@@ -2,10 +2,10 @@ angular.module('todosApp')
   .factory('todoStorage', function () {
     'use strict';
 
-    var STORAGE_ID = 'todos-angularjs';
+    var STORAGE_ID = 'todoslist-angularjs';
 
     var store = {
-      todos: [],
+      todosList: [],
       _getFromLocalStorage: function () {
         return JSON.parse(localStorage.getItem(STORAGE_ID) || '[]');
       },
@@ -15,19 +15,21 @@ angular.module('todosApp')
       },
 
       get: function () {
-        return angular.copy(store._getFromLocalStorage(), store.todos);
+        return angular.copy(store._getFromLocalStorage(), store.todosList);
       },
 
-      put: function (todo, index) {
-        store.todos[index] = todo;
-        store._saveToLocalStorage(store.todos);
-        return store.todos
+      put: function (list, index) {
+        store.todosList[index] = list;
+        store._saveToLocalStorage(store.todosList);
+        return store.todosList
       },
-      
-      clearCompleted: function () {
+
+      clearCompleted: function (listIndex) {
         var completeTodos = [];
         var incompleteTodos = [];
-        store.todos.forEach(function (todo) {
+        var todos = store.todosList[listIndex].todos;
+
+        todos.forEach(function (todo) {
           if (todo.completed) {
             completeTodos.push(todo);
           } else {
@@ -35,23 +37,44 @@ angular.module('todosApp')
           }
         });
 
-        angular.copy(incompleteTodos, store.todos);
+        angular.copy(incompleteTodos, todos);
 
-        store._saveToLocalStorage(store.todos);
-        return store.todos;
+        store._saveToLocalStorage(store.todosList);
+        return store.todosList;
       },
 
-      delete: function (todo) {
-        store.todos.splice(store.todos.indexOf(todo), 1);
-        store._saveToLocalStorage(store.todos);
-        return store.todos;
+      delete: function (list) {
+        store.todosList.splice(store.todosList.indexOf(list), 1);
+        store._saveToLocalStorage(store.todosList);
+        return store.todosList;
       },
 
-      insert: function (todo) {
-        store.todos.push(todo);
-        store._saveToLocalStorage(store.todos);        
-        return store.todos;
+      insert: function (list) {
+        store.todosList.push(list);
+        store._saveToLocalStorage(store.todosList);        
+        return store.todosList;
+      },
+
+      deleteFromList: function (todo, listIndex) {
+        var todos = store.todosList[listIndex].todos;
+        todos.splice(todos.indexOf(todo), 1);
+        store._saveToLocalStorage(store.todosList);
+        return store.todosList;
+      },
+
+      insertToList: function (todo, listIndex) {
+        store.todosList[listIndex].todos.push(todo);
+        store._saveToLocalStorage(store.todosList);        
+        return store.todosList;
+      },
+      
+      putIntoList: function (todo, listIndex) {        
+        var todos = store.todosList[listIndex].todos;
+        todos[todos.indexOf(todo)] = todo;
+        store._saveToLocalStorage(store.todosList);
+        return store.todosList
       }
+      
     };
     return store
   });

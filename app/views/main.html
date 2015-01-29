@@ -1,14 +1,9 @@
-<section id="todoapp" class="todoapp">
-  <header>
-    <h1>todos</h1>
-    <form id="todo-form" ng-submit="addTodo()">
-      <input id="new-todo" placeholder="What needs to be done?" ng-model="newTodo" autofocus>
+<div class="header">
+  <form id="todo-form" ng-submit="addList()">
+      <input class="form-control" placeholder="TodosList Subtitle?" ng-model="newList" autofocus>
     </form>
-  </header>
-  <section id="main" class="todobody" ng-show="todos.length">
-    <input id="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
-    <label for="toggle-all">Mark all as complete</label>
-    <todos-list todos="todos"></todos-list>  
-  </section>
-  <todos-footer todos="todos"></todos-footer>
+</div> 
+
+<section class="todo-list" ng-repeat="list in todosList">
+  <one-list list="list"></one-list>
 </section>
